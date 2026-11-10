@@ -1,8 +1,4 @@
-# Hi I am Liam Bacchus 👋
-I am a current first year at Western University and welcome to my engineering portfolio
-
-# Featured Project:
-## Firefighter Robot: "Remarkable Doorstop"
+# Firefighter Robot: "Remarkable Doorstop"
 An autonomous omni-directional robot engineered to solve mazes, avoid obstacles, and extinguish fires.
 
 - **Language & Tools:** Great Cow Basic (GCBasic)
@@ -23,10 +19,3 @@ An autonomous omni-directional robot engineered to solve mazes, avoid obstacles,
 - Robot cannot extinugish the candle in any ways that could be damaging or harmful
 
 ---
-
-## 📬 Connect with Me
-
-- 📧 **School Email:** [lbacchu2@uwo.ca](mailto:lbacchu2@uwo.ca)
-- 📧 **Email:** [liambacchus10@gmail.com](mailto:liambacchus10@gmail.com)
-- 💼 **LinkedIn:** [www.linkedin.com/in/liambacchus](https://linkedin.com/in/liambacchus)
-
