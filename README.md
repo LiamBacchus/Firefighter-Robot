@@ -16,6 +16,7 @@ An autonomous omni-directional robot engineered to solve mazes, avoid obstacles,
 
 ## 📬 Connect with Me
 
-- 📧 **Email:** [lbacchu2@uwo.ca](mailto:lbacchu2@uwo.ca)
+- 📧 **School Email:** [lbacchu2@uwo.ca](mailto:lbacchu2@uwo.ca)
+- 📧 **Email:** [liambacchus10@gmail.com](mailto:liambacchus10@gmail.com)
 - 💼 **LinkedIn:** [www.linkedin.com/in/liambacchus](https://linkedin.com/in/liambacchus)
 
