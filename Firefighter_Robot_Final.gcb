@@ -1,0 +1,527 @@
+//Chip Define
+//(Says what chip is being used)
+#Chip 16f18875, 32
+
+
+//----------------Port Defines----------------
+//(Defines the chip pins to tell the cpu which pins are being used)
+
+//Flame Sensor
+#Define Flame_Sensor ANA3
+
+//Fan
+#Define Fan PortB.7
+
+//Wall Sensors
+#Define Wall_left_sensor ANA2
+#Define Wall_Front_sensor ANA1
+
+//LCD
+#Define LCD_LINES 2
+#Define LCD_WIDTH 16
+#Define LCD_IO 4
+#Define LCD_DB4 PortD.4
+#Define LCD_DB5 PortD.5
+#Define LCD_DB6 PortD.6
+#Define LCD_DB7 PortD.7
+#Define LCD_RS PortD.0
+#Define LCD_RW PortD.1
+#Define LCD_ENABLE PortD.2
+#Define LCD_SPEED FAST
+
+//Motors
+#Define Top_Left_Forwards       PortC.0
+#Define Top_Left_Backwards      PortC.1
+#Define Top_Right_Forwards      PortC.2
+#Define Top_Right_Backwards     PortC.3
+#Define Bottom_Left_Forwards    PortB.1
+#Define Bottom_Left_Backwards   PortB.0
+#Define Bottom_Right_Forwards   PortB.2
+#Define Bottom_Right_Backwards  PortB.3
+
+//Line Detection
+#Define L_Detection PortA.0
+
+
+//----------------Port Directions----------------
+//(Defines whether the port is an input or output)
+
+//Flame
+Dir PortA.3 In
+
+//Fan
+Dir Fan Out
+
+//Wall Sensors
+Dir PortA.2 In
+Dir PortA.1 In
+
+//LCD
+Dir LCD_RS Out
+Dir LCD_RW Out
+Dir LCD_ENABLE Out
+Dir LCD_DB4 Out
+Dir LCD_DB5 Out
+Dir LCD_DB6 Out
+Dir LCD_DB7 Out
+
+//Motors
+Dir Top_Left_Forwards       Out
+Dir Top_Left_Backwards      Out
+Dir Top_Right_Forwards      Out
+Dir Top_Right_Backwards     Out
+Dir Bottom_Left_Forwards    Out
+Dir Bottom_Left_Backwards   Out
+Dir Bottom_Right_Forwards   Out
+Dir Bottom_Right_Backwards   Out
+
+//Line Detection
+Dir L_Detection     In
+
+//----------------Variable Setup----------------
+//(Sets the variables to Bit (1 Bit), Byte (8 Bit), Word (16 Bit), Long (32 Bit). There is limited space on the chip so setting the Dim's correctly will save RAM)
+
+//Line Counter
+Dim LCount as Byte
+
+//Flame Value
+Dim Flame_Value as Byte
+
+//Wall Values
+Dim Wall_Left_Value as Byte
+Dim Wall_Front_Value as Byte
+Dim Wall_Left_Distance as Byte
+Dim Wall_Front_Distance as Byte
+
+//90 Degree Turn Wait Time
+Dim NinetyTurn as Word      //Word is used to store values from 0 to 65535 
+
+//180 Degree Turn Wait Time
+Dim OneEightyTurn as Word
+
+//Small Wall Clear Distance
+Dim SmallWallClear as Word
+
+//Medium Wall Clear Distance
+Dim MediumWallClear as Word
+
+//Large Wall Clear Distance
+Dim LargeWallClear as Word
+
+//----------------Set Initial Pinouts and Variables----------------
+//(Sets up the pins and variables to starting preferences to prevent unwanted results)
+
+//Fan
+Fan = 0
+
+//Motors
+Top_Left_Forwards       =0
+Top_Left_Backwards      =0
+Top_Right_Forwards      =0
+Top_Right_Backwards     =0
+Bottom_Left_Forwards    =0
+Bottom_Left_Backwards   =0
+Bottom_Right_Forwards   =0
+Bottom_Right_Backwards   =0
+
+//Line Counter
+LCount = 0
+
+//90 Degree Turn Wait Time
+NinetyTurn = 800
+
+//180 Degree Turn Wait Time
+OneEightyTurn = 1200
+
+//Small Wall Clear Distance
+SmallWallClear = 500
+
+//Medium Wall Clear Distance
+MediumWallClear = 1000
+
+//Large Wall Clear Distance
+LargeWallClear = 2000
+
+//----------------Movement Subroutines----------------
+//(Sets up the motors to move in the correct way for the omni-directional wheel setup)
+Sub Move_Forwards ()
+    Top_Left_Forwards = 1
+    Top_Left_Backwards = 0
+    Top_Right_Forwards = 1
+    Top_Right_Backwards = 0
+    Bottom_Left_Forwards = 0
+    Bottom_Left_Backwards = 1
+    Bottom_Right_Forwards = 0
+    Bottom_Right_Backwards = 1
+
+End Sub
+
+Sub Move_Backwards ()
+    Top_Left_Forwards = 0
+    Top_Left_Backwards = 1
+    Top_Right_Forwards = 0
+    Top_Right_Backwards = 1
+    Bottom_Left_Forwards = 1
+    Bottom_Left_Backwards = 0
+    Bottom_Right_Forwards = 1
+    Bottom_Right_Backwards = 0
+
+End Sub
+
+Sub Move_Left ()
+    Top_Left_Forwards = 0
+    Top_Left_Backwards = 1
+    Top_Right_Forwards = 1
+    Top_Right_Backwards = 0
+    Bottom_Left_Forwards = 0
+    Bottom_Left_Backwards = 1
+    Bottom_Right_Forwards = 1
+    Bottom_Right_Backwards = 0
+
+End Sub
+
+Sub Move_Right ()
+    Top_Left_Forwards = 1
+    Top_Left_Backwards = 0
+    Top_Right_Forwards = 0
+    Top_Right_Backwards = 1
+    Bottom_Left_Forwards = 1
+    Bottom_Left_Backwards = 0
+    Bottom_Right_Forwards = 0
+    Bottom_Right_Backwards = 1
+
+End Sub
+
+Sub Spin_Right ()
+    Top_Left_Forwards = 1
+    Top_Left_Backwards = 0
+    Top_Right_Forwards = 1
+    Top_Right_Backwards = 0
+    Bottom_Left_Forwards = 0
+    Bottom_Left_Backwards = 1
+    Bottom_Right_Forwards = 1
+    Bottom_Right_Backwards = 0
+
+End Sub
+
+Sub Spin_Left ()
+    Top_Left_Forwards = 0
+    Top_Left_Backwards = 1
+    Top_Right_Forwards = 0
+    Top_Right_Backwards = 1
+    Bottom_Left_Forwards = 1
+    Bottom_Left_Backwards = 0
+    Bottom_Right_Forwards = 0
+    Bottom_Right_Backwards = 1
+
+End Sub
+
+Sub Stop ()
+    Top_Left_Forwards = 0
+    Top_Left_Backwards = 0
+    Top_Right_Forwards = 0
+    Top_Right_Backwards = 0
+    Bottom_Left_Forwards = 0
+    Bottom_Left_Backwards = 0
+    Bottom_Right_Forwards = 0
+    Bottom_Right_Backwards = 0
+
+End Sub
+
+
+//----------------Detection/Printing Subroutines----------------
+//(These subroutines need to be run in every subroutine for movement otherwise the bot will only read the sensors once and never again)
+Sub Read_Sensors()
+    Wall_Left_Value = ReadAD( Wall_Left_Sensor )
+    Wall_Front_Value = ReadAD( Wall_Front_Sensor )
+
+    Wall_Left_Distance = ( (6787 / (Wall_Left_Value - 3)) - 4) / 5
+    Wall_Front_Distance = ( (6787 / (Wall_Front_Value - 3)) - 4) / 5
+
+    Flame_Value = ReadAD( Flame_Sensor )
+
+End Sub
+
+Sub Print_Walls()
+    CLS
+    Locate 0,0
+    Print "Front: "
+    Print Wall_Front_Distance
+
+    Locate 1,0
+    Print "Left: "
+    Print Wall_Left_Distance
+    Wait 250 ms
+
+End Sub
+
+Sub Print_LCount()
+    CLS
+    Locate 0,0
+    Print "Room #: "
+    Print LCount
+
+End Sub
+
+Sub Print_Flame()
+    CLS
+    Locate 0,0
+    Print "Flame: "
+    Print Flame_Value
+    Locate 1,5
+
+    If Flame_Value < 5 Then
+        Print "Hot"
+    End If
+
+    If Flame_Value > 5 Then
+        Print "Cold"
+    End If
+
+   
+
+End Sub
+
+
+//----------------Extingiush Subroutine----------------
+Sub Extinguish()
+    Read_Sensors
+    Do Until Flame_Value > 100
+        Read_Sensors
+        If Flame_Value <= 5 Then
+            Stop
+            Fan = 1
+            wait 1000 ms //I really recommend the wait as the candle can flicker leading the bot to move away from the flame
+        Else
+            Fan = 0
+            Move_Forwards
+        End If
+    Loop
+End Sub
+
+
+//----------------Maze Solving Subroutines----------------
+
+Sub Hall1()
+    Read_Sensors
+    Print_LCount
+    If Wall_Left_Distance > 50 Then
+        Spin_Left
+        Wait NinetyTurn ms          //Avoid using Wait function as much as you can only use if for hard coded directions as it shuts down the CPU (meaning no sensing)
+        Move_Forwards
+        Wait MediumWallClear ms
+        LCount = 1
+    Else 
+        Move_Forwards
+    End If
+
+End Sub
+
+Sub Hall2()
+    Read_Sensors
+    Print_LCount
+    If Wall_Left_Distance > 50 Then
+        Spin_Left
+        wait NinetyTurn ms
+        Move_Forwards
+        wait SmallWallClear ms
+        LCount = 2
+    Else 
+        Move_Forwards
+    End If
+
+End Sub
+
+Sub Room1()
+    Read_Sensors
+    Print_LCount
+
+    If Flame_Value < 15 Then
+        Extinguish
+    
+    Else If Flame_Value > 100 Then
+        Move_Backwards
+        Wait SmallWallClear ms
+        Spin_Right
+        wait OneEightyTurn ms
+        Move_Forwards 
+        wait SmallWallClear ms
+        LCount = 3
+
+    Else If Flame_Value > 50 Then
+        Spin_left
+    Else If Flame_Value < 50 and Flame_Value > 15 Then
+        Move_Forwards
+        
+    End If
+
+End Sub 
+
+Sub Hall3()
+    Read_Sensors
+    Print_LCount
+    If Wall_Left_Distance > 25 Then
+        Move_Left
+    Else
+        Move_Forwards
+        wait MediumWallClear ms
+        LCount = 4
+    End If
+
+End Sub
+
+Sub Room2()
+    Read_Sensors
+    Print_LCount
+    If Flame_Value > 100 Then
+        Move_Backwards
+        Wait MediumWallClear ms
+        Move_Right 
+        wait MediumWallClear ms
+        LCount = 5
+
+    Else if Flame_Value < 5 Then
+        Stop
+        Extinguish
+    
+    Else If Flame_Value > 50 Then
+        Spin_Right
+    
+    Else If Flame_Value < 50 Then
+        Move_Forwards
+
+    End If
+    
+End Sub
+
+Sub Hall4()
+    Read_Sensors
+    Print_LCount
+    
+    If Wall_Front_Distance > 50 Then
+        LCount =6
+    Else
+        Move_Right
+    End if
+
+End Sub
+
+Sub Hall5()
+    Read_Sensors
+    Print_LCount
+
+    If Wall_Front_Distance < 25 Then
+        Spin_Right
+        Wait NinetyTurn ms
+        Move_Forwards 
+        wait SmallWallClear ms
+        Spin_Right
+        Wait NinetyTurn ms
+        LCount = 7
+    Else
+        Move_Forwards
+    End If
+
+End Sub
+
+Sub Room3()
+    Read_Sensors
+    Print_Flame
+
+    If Flame_Value > 100 Then
+        Spin_Right
+        Wait NinetyTurn ms
+        LCount = 8
+
+    Else If Flame_Value < 5 Then
+        Stop
+        Extinguish
+    
+    Else If Flame_Value > 50 Then
+        Spin_Right
+    
+    Else If Flame_Value < 50 Then
+        Stop 
+        Extinguish
+
+    End If
+    
+End Sub
+
+Sub Hall6()
+    Read_Sensors
+    Print_LCount
+    If Wall_Front_Distance < 10 Then
+        Spin_Left
+        wait NinetyTurn ms
+        LCount = 9
+    Else 
+        Move_Forwards
+    End If
+
+End Sub
+
+Sub Hall7()
+    Read_Sensors
+    Print_LCount
+    If Wall_Left_Distance > 75 Then
+        Move_Forwards
+        wait LargeWallClear ms
+        Do Until Wall_Front_Distance < 50
+            Read_Sensors
+            Move_Left
+        Loop
+        If Wall_Front_Distance < 50 Then
+            LCount = 10
+        End If
+    Else 
+        Move_Forwards
+    End If
+
+End Sub
+
+Sub Room4()
+    Read_Sensors
+    Print_Flame
+    If Flame_Value < 3 Then
+        Stop
+        Extinguish
+    
+    Else If Flame_Value > 50 Then
+        Spin_Right
+    
+    Else If Flame_Value < 50 Then
+        Stop 
+        Extinguish
+    End If
+    
+End Sub
+
+
+//----------------Main Loop----------------
+
+Do Forever
+    If LCount = 0 Then
+        Hall1
+    Else If LCount = 1 Then
+        Room1
+    Else If LCount = 2 Then
+        Hall3
+    Else If LCount = 3 Then
+        Room2
+    Else If LCount = 4 Then
+        Hall4
+    Else If LCount = 5 Then
+        Hall5
+    Else If LCount = 6 Then
+        Room3
+    Else If LCount = 7 Then
+        Hall2
+    Else If LCount = 8 Then
+        Hall6
+    Else If LCount = 9 Then
+        Hall7
+    Else If LCount = 10 Then
+        Room4
+    End If
+Loop
