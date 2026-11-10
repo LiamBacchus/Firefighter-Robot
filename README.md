@@ -6,8 +6,11 @@ I am a current first year at Western University and welcome to my engineering po
 An autonomous omni-directional robot engineered to solve mazes, avoid obstacles, and extinguish fires.
 
 - **Language & Tools:** Great Cow Basic (GCBasic)
-- **Key Features:** Integrated optical/flame sensors, motor control, and autonomous navigation logic.
-- **Takeaway:** Designed and debugged custom embedded firmware to handle real-time environmental input.
+- **Key Features:** 
+  - **Wall Detection** - IR sensors placed on front and left side of robot for live wall tracking.
+  - **Flame Detection** - Phototransistor tuned to detect light in entrance of room to reduce maze solve times.
+  - **Motor Control** - Motor driver control to direct motors for omnidirectional movement.
+- **Takeaway:** Designed and debugged navigation and detection logic for PIC microcontrollers.
 
 ---
 
