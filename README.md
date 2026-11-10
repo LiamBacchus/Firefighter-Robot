@@ -1,16 +1,18 @@
-## Hi there 👋
+# Hi I am Liam Bacchus 👋
+I am a current first year at Western University and welcome to my engineering portfolio
 
-<!--
-**LiamBacchus/LiamBacchus** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+# Featured Project:
+## Firefighter Robot: "Remarkable Doorstop"
+An autonomous omni-directional robot engineered to solve mazes, avoid obstacles, and extinguish fires.
 
-Here are some ideas to get you started:
+- **Language & Tools:** Great Cow Basic (GCBasic)
+- **Key Features:** Integrated optical/flame sensors, motor control, and autonomous navigation logic.
+- **Takeaway:** Designed and debugged custom embedded firmware to handle real-time environmental input.
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+---
+
+## 📬 Connect with Me
+
+- 📧 **Email:** [lbacchu2@uwo.ca](mailto:lbacchu2@uwo.ca)
+- 💼 **LinkedIn:** [www.linkedin.com/in/liambacchus](https://linkedin.com/in/liambacchus)
+
