@@ -1,0 +1,347 @@
+#Chip 16f18875, 32
+
+#Define Flame_Sensor ANA3
+Dir PortA.3 In
+Dim Flame_Value as Byte
+
+
+#Define Fan PortB.7
+Dir Fan Out
+Fan = 0
+
+#Define Wall_left_sensor ANA2
+#Define Wall_Front_sensor ANA1
+Dir PortA.2 In
+Dir PortA.1 In
+Dim Wall_Left_Value as Byte
+Dim Wall_Front_Value as Byte
+Dim Wall_Left_Distance as Byte
+Dim Wall_Front_Distance as Byte
+
+#Define LCD_LINES 2
+#Define LCD_WIDTH 16
+#Define LCD_IO 4
+#Define LCD_DB4 PortD.4
+#Define LCD_DB5 PortD.5
+#Define LCD_DB6 PortD.6
+#Define LCD_DB7 PortD.7
+#Define LCD_RS PortD.0
+#Define LCD_RW PortD.1
+#Define LCD_ENABLE PortD.2
+#Define LCD_SPEED FAST
+
+Dir LCD_RS Out
+Dir LCD_RW Out
+Dir LCD_ENABLE Out
+Dir LCD_DB4 Out
+Dir LCD_DB5 Out
+Dir LCD_DB6 Out
+Dir LCD_DB7 Out
+
+#Define L_Detection PortA.0
+Dir L_Detection     In
+Dim LCount as Byte
+
+INVLA0 = 0
+
+#Define Top_Left_Forwards       PortC.0
+#Define Top_Left_Backwards      PortC.1
+#Define Top_Right_Forwards      PortC.2
+#Define Top_Right_Backwards     PortC.3
+#Define Bottom_Left_Forwards    PortB.1
+#Define Bottom_Left_Backwards   PortB.0
+#Define Bottom_Right_Forwards   PortB.2
+#Define Bottom_Right_Backwards  PortB.3
+
+Dir Top_Left_Forwards       Out
+Dir Top_Left_Backwards      Out
+Dir Top_Right_Forwards      Out
+Dir Top_Right_Backwards     Out
+Dir Bottom_Left_Forwards    Out
+Dir Bottom_Left_Backwards   Out
+Dir Bottom_Right_Forwards   Out
+Dir Bottom_Right_Backwards   Out
+
+Top_Left_Forwards       =0
+Top_Left_Backwards      =0
+Top_Right_Forwards      =0
+Top_Right_Backwards     =0
+Bottom_Left_Forwards    =0
+Bottom_Left_Backwards   =0
+Bottom_Right_Forwards   =0
+Bottom_Right_Backwards   =0
+
+Sub Move_Forwards ()
+    Top_Left_Forwards = 1
+    Top_Left_Backwards = 0
+    Top_Right_Forwards = 1
+    Top_Right_Backwards = 0
+    Bottom_Left_Forwards = 0
+    Bottom_Left_Backwards = 1
+    Bottom_Right_Forwards = 0
+    Bottom_Right_Backwards = 1
+
+End Sub
+
+Sub Move_Backwards ()
+    Top_Left_Forwards = 0
+    Top_Left_Backwards = 1
+    Top_Right_Forwards = 0
+    Top_Right_Backwards = 1
+    Bottom_Left_Forwards = 1
+    Bottom_Left_Backwards = 0
+    Bottom_Right_Forwards = 1
+    Bottom_Right_Backwards = 0
+
+End Sub
+
+Sub Move_Left ()
+    Top_Left_Forwards = 0
+    Top_Left_Backwards = 1
+    Top_Right_Forwards = 1
+    Top_Right_Backwards = 0
+    Bottom_Left_Forwards = 0
+    Bottom_Left_Backwards = 1
+    Bottom_Right_Forwards = 1
+    Bottom_Right_Backwards = 0
+
+End Sub
+
+Sub Move_Right ()
+    Top_Left_Forwards = 1
+    Top_Left_Backwards = 0
+    Top_Right_Forwards = 0
+    Top_Right_Backwards = 1
+    Bottom_Left_Forwards = 1
+    Bottom_Left_Backwards = 0
+    Bottom_Right_Forwards = 0
+    Bottom_Right_Backwards = 1
+
+End Sub
+
+Sub Spin_Right ()
+    Top_Left_Forwards = 1
+    Top_Left_Backwards = 0
+    Top_Right_Forwards = 1
+    Top_Right_Backwards = 0
+    Bottom_Left_Forwards = 0
+    Bottom_Left_Backwards = 1
+    Bottom_Right_Forwards = 1
+    Bottom_Right_Backwards = 0
+
+End Sub
+
+Sub Spin_Left ()
+    Top_Left_Forwards = 0
+    Top_Left_Backwards = 1
+    Top_Right_Forwards = 0
+    Top_Right_Backwards = 1
+    Bottom_Left_Forwards = 1
+    Bottom_Left_Backwards = 0
+    Bottom_Right_Forwards = 0
+    Bottom_Right_Backwards = 1
+
+End Sub
+
+Sub Stop ()
+    Top_Left_Forwards = 0
+    Top_Left_Backwards = 0
+    Top_Right_Forwards = 0
+    Top_Right_Backwards = 0
+    Bottom_Left_Forwards = 0
+    Bottom_Left_Backwards = 0
+    Bottom_Right_Forwards = 0
+    Bottom_Right_Backwards = 0
+
+End Sub
+
+Top_Left_Forwards = 0
+Top_Left_Backwards = 0
+Top_Right_Forwards = 0
+Top_Right_Backwards = 0
+Bottom_Left_Forwards = 0
+Bottom_Left_Backwards = 0
+Bottom_Right_Forwards = 0
+Bottom_Right_Backwards = 0
+
+LCount = 0
+
+
+Sub Read_Sensors()
+    Wall_Left_Value = ReadAD( Wall_Left_Sensor )
+    Wall_Front_Value = ReadAD( Wall_Front_Sensor )
+
+    Wall_Left_Distance = ( (6787 / (Wall_Left_Value - 3)) - 4) / 5
+    Wall_Front_Distance = ( (6787 / (Wall_Front_Value - 3)) - 4) / 5
+
+    Flame_Value = ReadAD( Flame_Sensor )
+
+End Sub
+
+Sub Print_Walls()
+    CLS
+    
+    Locate 0,0
+    Print "Front: "
+    Print Wall_Front_Distance
+
+    Locate 1,0
+    Print "Left: "
+    Print Wall_Left_Distance
+    Wait 250 ms
+
+End Sub
+
+Sub Print_LCount()
+    CLS
+    
+    Locate 0,0
+    Print "Room #: "
+    Print LCount
+
+End Sub
+
+Sub Print_Flame()
+    Locate 0,0
+    Print "Flame"
+    Print Flame_Value
+
+    Locate 1,0
+    If Flame_Value > 3 Then
+        Print "Cold"
+    Else
+        Print "Hot"
+    End If
+
+End Sub
+
+Sub Extinguish()
+    Read_Sensors
+    Do Until Flame_Value > 3
+        Read_Sensors
+        If Flame_Value <= 3 Then
+            Fan = 1
+        Else
+            Fan = 0
+        End If
+    Loop
+End Sub
+
+
+Sub Hallway1()
+    Read_Sensors
+    Print_Walls
+    Move_Forwards
+    Wait 2000 ms
+    
+    Stop
+    wait 4000 ms 
+    Move_Left
+    Wait 400 ms
+    Spin_Left
+    wait 4000 ms
+    Stop 
+    Wait 400 ms
+    LCount = 1
+
+        
+
+
+End Sub
+
+Sub RoomOne()
+    Read_Sensors
+    Print_Flame
+
+
+    If Flame_Value < 15 Then
+        Extinguish
+    End If
+    
+    If Flame_Value > 50 Then
+        Spin_left
+        If Flame_Value < 50 and Flame_Value 15 Then
+            Move_Forwards
+        End If
+    End If
+    
+    If Flame_Value > 100 Then
+        LCount = 2
+        Move_Backwards
+        wait 400 ms
+    End If
+End Sub 
+
+Sub Hall2() // I NEED TO WORK THIS PART OUT
+    Read_Sensors
+    Print_Walls
+    
+
+
+
+    If Wall_Left_Distance > 50 Then
+        Move_Left
+    Else If Wall_Left_Distance < 25 Then
+        Stop
+        Spin_Left
+        Wait 400 ms
+        LCount = 3
+    
+    End If
+
+    End If 
+    //Need to make it back up and then go into room two corner three and et cetera
+End Sub
+
+Sub RoomTwo()
+    Read_Sensors
+    Print_Sensors
+    
+    If Flame_Value > 100 Then
+        LCount = 4
+
+    Else If Flame_Value < 15 Then
+        Extinguish
+    
+    Else If Flame_Value > 50 Then
+        Spin_Right
+        If Flame_Value < 50 and Flame_Value 15 Then
+            Move_Forwards
+        End If
+
+    End If
+    
+End Sub
+
+Sub Hall3()
+    Read_Sensors
+
+End Sub
+
+Top_Left_Forwards = 0
+Top_Left_Backwards = 0
+Top_Right_Forwards = 0
+Top_Right_Backwards = 0
+Bottom_Left_Forwards = 0
+Bottom_Left_Backwards = 0
+Bottom_Right_Forwards = 0
+Bottom_Right_Backwards = 0
+
+Do Forever
+
+    
+
+    If LCount = 0 Then
+        Hallway1
+    Else If LCount = 1 Then
+        RoomOne
+    Else If LCount = 2 Then
+        Hall2
+    Else If LCount = 3 Then
+        RoomTwo
+    Else If LCount = 4 Then
+        Hall3
+    End If
+    
+    
+Loop

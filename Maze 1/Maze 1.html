@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Compilation Report</title>
+</head>
+<body>
+<h1>Compilation Report</h1>
+<p>Compiler Version (YYYY-MM-DD): 2025.10.04 (Windows 64 bit) : Build 1523)</p>
+<h2>Compilation time</h2>
+<p> (Compile time: 2.307617 seconds)</p>
+<p> (Assembly time: 0.2041016 seconds)</p>
+<p> (Download time: 0 seconds)</p>
+<p> (Total time: 2.511719 seconds)</p>
+<h2>Chip resource usage:</h2>
+<p>Chip Model: 16F18875</p>
+<p>Program Memory: 1141/8192 words (13.93%)</p>
+<p>RAM: 30/1024 bytes (2.93%)</p>
+<p> OSC: HFINT32, 32Mhz (Internal oscillator)</p>
+<h2>RAM Allocation</h2>
+<table border="1">
+</table>
+<h2>Subroutines</h2>
+<table border="1">
+<tr><th>Name</th><th>Code Size (lines)</th><th>Compiled Size (words)</th><th>Page</th><th>Outgoing calls</th></tr>
+<tr><td>Main</td><td>135</td><td>246</td><td>1</td><td>INITLCD(12), SYSDIVSUB16(4), SYSCOMPLESSTHAN16(1), Delay_MS(3), FLAMEEXTINGUISH(1), SPIN_RIGHT(1), STOP(1), FLAMEDETECTION(2), LEFT90(4), PRINT(1), PRINT(3), LOCATE(2), CLS(1), MOVE_FORWARDS(7), READAD(2), INITSYS(34)</td></tr>
+<tr><td>MOVE_FORWARDS</td><td>8</td><td>9</td><td>1</td><td></td></tr>
+<tr><td>SPIN_RIGHT</td><td>8</td><td>9</td><td>1</td><td></td></tr>
+<tr><td>SPIN_LEFT</td><td>8</td><td>9</td><td>1</td><td></td></tr>
+<tr><td>STOP</td><td>8</td><td>9</td><td>1</td><td></td></tr>
+<tr><td>FLAMEDETECTION</td><td>9</td><td>25</td><td>1</td><td>MOVE_FORWARDS(1), PRINT(2), LOCATE(1), CLS(1)</td></tr>
+<tr><td>FLAMEEXTINGUISH</td><td>3</td><td>7</td><td>1</td><td></td></tr>
+<tr><td>LEFT90</td><td>2</td><td>5</td><td>1</td><td>Delay_MS(1), SPIN_LEFT(1)</td></tr>
+<tr><td>READAD</td><td>74</td><td>287</td><td>1</td><td>Delay_10US(1)</td></tr>
+<tr><td>LOCATE</td><td>7</td><td>24</td><td>1</td><td>SYSMULTSUB(1), Delay_10US(1), LCDNORMALWRITEBYTE(1)</td></tr>
+<tr><td>CLS</td><td>5</td><td>16</td><td>1</td><td>Delay_MS(1), LCDNORMALWRITEBYTE(2)</td></tr>
+<tr><td>INITLCD</td><td>261</td><td>84</td><td>1</td><td>Delay_MS(3), CLS(1), LCDNORMALWRITEBYTE(3)</td></tr>
+<tr><td>PRINT</td><td>10</td><td>30</td><td>1</td><td>LCDNORMALWRITEBYTE(1)</td></tr>
+<tr><td>PRINT</td><td>13</td><td>53</td><td>1</td><td>SYSDIVSUB(2), SYSCOMPLESSTHAN(2), LCDNORMALWRITEBYTE(3)</td></tr>
+<tr><td>CHECKBUSYFLAG</td><td>41</td><td>48</td><td>1</td><td></td></tr>
+<tr><td>LCDNORMALWRITEBYTE</td><td>224</td><td>69</td><td>1</td><td>CHECKBUSYFLAG(1)</td></tr>
+<tr><td>INITSYS</td><td>1146</td><td>27</td><td>1</td><td></td></tr>
+<tr><td>SYSMULTSUB</td><td>39</td><td>12</td><td>1</td><td></td></tr>
+<tr><td>SYSDIVSUB</td><td>48</td><td>20</td><td>1</td><td></td></tr>
+<tr><td>SYSDIVSUB16</td><td>38</td><td>52</td><td>1</td><td>SYSCOMPEQUAL16(1)</td></tr>
+<tr><td>SYSCOMPEQUAL16</td><td>34</td><td>11</td><td>1</td><td></td></tr>
+<tr><td>SYSCOMPLESSTHAN</td><td>23</td><td>7</td><td>1</td><td></td></tr>
+<tr><td>SYSCOMPLESSTHAN16</td><td>38</td><td>15</td><td>1</td><td></td></tr>
+<tr><td>Delay_10US</td><td>0</td><td>8</td><td>1</td><td></td></tr>
+<tr><td>Delay_MS</td><td>0</td><td>14</td><td>1</td><td></td></tr>
+<tr><td>SysStringTables</td><td>0</td><td>45</td><td>1</td><td></td></tr>
+</table>
+</body>
+</html>
